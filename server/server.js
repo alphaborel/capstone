@@ -8,11 +8,6 @@ const knex = require('./db/knex');
 
 //routes
 const index = require('./routes/indexRoutes');
-const doctors = require('./routes/doctorsRoutes');
-const patients = require('./routes/patientsRoutes');
-const testRanges = require('./routes/testRangesRoutes');
-const testResults = require('./routes/testResultsRoutes');
-const notes = require('./routes/notesRoutes');
 
 //authentication
 const jwt = require("jsonwebtoken");
@@ -30,28 +25,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use('/', index);
-app.use('/doctors', doctors);
 
-//more authentication
+// paths put after this line will run authentication check
 app.use(jwtUserAuth);
-app.get("/check", (req, res) => {
-  res.json({doctor: req.decoded.doctor});
-})
-app.use('/patients', patients);
-app.use('/ranges', testRanges);
-app.use('/results', testResults);
-app.use('/notes', notes);
+//app.use('/somepath', someroutefile);
 
 app.listen(port, function() {
   console.log("listening on port: ", port);
 })
 
-
-
 function jwtUserAuth(req, res, next){
    //send as a query parameter
    let token = req.body.token || req.query.token || req.headers['x-access-token']|| req.params.token;
-   console.log("token is" + token);
+   console.log("token is " + token);
    // decode token
    if (token) {
        // verifies secret and checks exp

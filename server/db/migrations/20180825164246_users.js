@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
   t.increments('id').primary();
   t.string('username').unique();
   t.string('password');
-  t.string('buisnessName');
+  t.string('businessName');
   t.string('email');
   t.timestamps(true, true);
   })

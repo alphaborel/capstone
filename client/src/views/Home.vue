@@ -1,35 +1,35 @@
 <template>
-  <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
-        <img src="@/assets/logo.png" alt="Vuetify.js" class="mb-5">
-        <blockquote>
-          &#8220;First, solve the problem. Then, write the code.&#8221;
-          <footer>
-            <small>
-              <em>&mdash;John Johnson</em>
-            </small>
-          </footer>
-        </blockquote>
-      </v-layout>
-    </v-slide-y-transition>
-  </v-container>
+  <div class="splash">
+    <div class="tagDiv">
+      <h3>Grow your small business with:</h3>
+      <h1><em>Loan Tracker</em></h1>
+      <v-btn color="green" large :to="{name: 'signup' }">Get Started</v-btn>
+    </div>
+  </div>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<script>
+export default {
+  name: 'home'
+}
+</script>
+
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  .splash {
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/splash_background.jpg");
+    background-repeat: no-repeat;
+    position: fixed;
+    background-size: cover;
+  }
+  .tagDiv {
+    max-width: 400px;
+    margin-left: 4em;
+    margin-top: 10em;
+    text-align: center;
+  }
+  .tagDiv h1 {
+    font-size: 5em;
+  }
 </style>

@@ -9,16 +9,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.post("/login", function(req, res) {
-  knex('doctors')
-  .where({'email': req.body.email, 'password': req.body.password})
-  .then((doctor) => {
-    doctor = doctor[0];
-    if (!doctor) {
+  knex('users')
+  .where({'username': req.body.username, 'password': req.body.password})
+  .first()
+  .then((user) => {
+    console.log(user);
+    if (!user) {
       res.sendStatus(400);
     }
-    if (doctor.password === req.body.password) {
-      delete doctor.password;
-      res.json({doctor: doctor, token: jwt.sign({doctor}, jwtSecret)});
+    if (user.password === req.body.password) {
+      delete user.password;
+      res.json({user: user, token: jwt.sign({user}, jwtSecret)});
     } else {
       res.sendStatus(400);
     }
@@ -26,16 +27,17 @@ router.post("/login", function(req, res) {
 })
 
 router.post("/register", function(req, res) {
-    knex('doctors').insert({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.email,
-      password: req.body.password
+    knex('users').insert({
+      username: req.body.username,
+      password: req.body.password,
+      businessName: req.body.businessName,
+      email: req.body.email
     }, "*")
-    .then((doctor) => {
-      doctor = doctor[0];
-      delete doctor.password;
-      res.json({doctor: doctor, token: jwt.sign({doctor}, jwtSecret)});
+    .then((user) => {
+      delete user.password;
+      res.json({user: user, token: jwt.sign({user}, jwtSecret)});
+    }).catch((e) => {
+      console.error('somthing went wrong', e)
     })
 })
 
