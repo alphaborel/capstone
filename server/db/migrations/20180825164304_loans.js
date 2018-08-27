@@ -3,10 +3,12 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable('loans', (t)=>{
     t.increments('id').primary();
     t.string('lenderName');
+    t.string('recipientsName');
     t.string('loanNumber');
     t.integer('totalAmount');
     t.string('startDate');
     t.string('payoffDate');
+    t.boolean('isUserLoan');
     t.integer('userId')
       .unsigned()
       .references('id')

@@ -3,40 +3,26 @@
   <div class="wrapper">
     <div class="loanColumn">
       <div class="columnTitle">
-        <h3>Money Loaned Out</h3>
-        <v-btn class="addBtn">ADD NEW</v-btn>
+        <h3>Outstanding Loans</h3>
+          <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
       </div>
     </div>
+
     <div class="loanColumn">
       <div class="columnTitle">
-        <h3>Money Owed</h3>
-        <router-link :to="{name: 'loan' }">
-          <v-btn class="addBtn">ADD NEW</v-btn>
-        </router-link>
-
+        <h3>Originated Loans</h3>
+          <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
       </div>
-      <Loans :loanInfo="loans" />
+      <Loans />
     </div>
 
-    <div class="chartDiv">
-      <Chart :loanInfo="loans"/>
+    <div v-if="showChart" class="chartDiv">
+      <Chart />
     </div>
 
-    <!-- form experiment -->
-    <v-form ref="form" v-model="valid" @submit.prevent="createLoan">
-     <v-text-field
-       v-model="loan.lenderName"
-       :rules="nameRules"
-       label="Lender Name"
-       required
-     ></v-text-field>
-     <v-btn
-       :disabled="!valid"
-       type="submit"
-     >
-       submit
-     </v-btn>
-   </v-form>
+    <div v-if="loanForm" class="chartDiv">
+      <Loan v-on:closeForm="closeLoanForm"/>
+    </div>
 
   </div> <!-- end wrapper div -->
 </template>
@@ -45,6 +31,7 @@
 
 import Chart from '../components/Chart.vue'
 import Loans from '../components/Loans.vue'
+import Loan from '../components/Loan.vue'
 
 export default {
   name: 'dashboard',
@@ -53,11 +40,13 @@ export default {
   },
   data: () => ({
     valid: false,
+    showChart: true,
+    loanForm: false,
     loan: {
       lenderName: '',
-      totalAmount: '99',
-      startDate: '5675',
-      payoffDate: '657'
+      totalAmount: '',
+      startDate: '',
+      payoffDate: ''
     },
     nameRules: [
       v => !!v || 'Name is required'
@@ -65,7 +54,18 @@ export default {
   }),
   components: {
     Chart,
-    Loans
+    Loans,
+    Loan
+  },
+  methods: {
+    showLoanForm () {
+      this.showChart = false
+      this.loanForm = true
+    },
+    closeLoanForm: function () {
+      this.showChart = true
+      this.loanForm = false
+    }
   }
 }
 </script>

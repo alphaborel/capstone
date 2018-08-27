@@ -42,7 +42,8 @@ export default new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard,
-      beforeEnter: isLoggedIn
+      beforeEnter: isLoggedIn,
+      meta: {title: 'Dashboard'}
     },
     {
       path: '/loan/:id',

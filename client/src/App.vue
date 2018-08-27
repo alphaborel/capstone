@@ -32,12 +32,26 @@
 
 export default {
   name: 'App',
+  mounted () {
+    const token = localStorage.getItem('userToken') || ''
+    console.log('mounted method', token)
+    if (token !== '') {
+      this.user = true
+    }
+  },
   data () {
     return {
       clipped: false,
       fixed: false,
       miniVariant: true,
-      title: 'Loan-Dash'
+      title: 'Loan-Dash',
+      user: false
+    }
+  },
+  methods: {
+    logout () {
+      localStorage.clear()
+      this.$router.push('/login')
     }
   }
 }

@@ -4,12 +4,14 @@
       <v-flex>
         <v-form ref="form" v-model="valid" @submit.prevent="createLoan">
          <v-text-field
+           light
            v-model="lenderName"
            :rules="nameRules"
            label="Lender Name"
            required
          ></v-text-field>
          <v-text-field
+           light
            v-model="totalAmount"
            :rules="nameRules"
            label="Total Amount"
@@ -17,11 +19,10 @@
          ></v-text-field>
          <v-btn
            :disabled="!valid"
-           type="submit"
-         >
+           type="submit">
            submit
          </v-btn>
-         <v-btn @click="clear">clear</v-btn>
+         <v-btn @click="cancelEntry">Cancel</v-btn>
        </v-form>
      </v-flex>
     </v-layout>
@@ -46,13 +47,10 @@ export default {
     ]
   }),
   // component form methods
-  submit () {
-    if (this.$refs.form.validate()) {
-      // Native form submission is not yet supported
+  methods: {
+    cancelEntry () {
+      this.$emit('closeForm')
     }
-  },
-  clear () {
-    this.$refs.form.reset()
   }
 }
 </script>
