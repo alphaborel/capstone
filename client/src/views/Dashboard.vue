@@ -13,7 +13,8 @@
         <h3>Originated Loans</h3>
           <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
       </div>
-      <Loans />
+      <ProgressBar v-if="loading" />
+      <Loans :loanInfo="loans"/>
     </div>
 
     <div v-if="showChart" class="chartDiv">
@@ -32,22 +33,25 @@
 import Chart from '../components/Chart.vue'
 import Loans from '../components/Loans.vue'
 import Loan from '../components/Loan.vue'
+import ProgressBar from '../components/ProgressBar.vue'
 
 export default {
   name: 'dashboard',
   mounted () {
-
+    this.$axios.get('/loans').then((response) => {
+      this.loading = false
+      this.loans = response.data
+      console.log('server response', response.data);
+    }).catch((e) => {
+      console.log('something went wrong!', e);
+    })
   },
   data: () => ({
     valid: false,
     showChart: true,
     loanForm: false,
-    loan: {
-      lenderName: '',
-      totalAmount: '',
-      startDate: '',
-      payoffDate: ''
-    },
+    loading: false,
+    loans: [],
     nameRules: [
       v => !!v || 'Name is required'
     ]
@@ -55,7 +59,8 @@ export default {
   components: {
     Chart,
     Loans,
-    Loan
+    Loan,
+    ProgressBar
   },
   methods: {
     showLoanForm () {

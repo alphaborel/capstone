@@ -13,7 +13,6 @@ router.post("/login", function(req, res) {
   .where({'username': req.body.username, 'password': req.body.password})
   .first()
   .then((user) => {
-    console.log(user);
     if (!user) {
       res.sendStatus(400);
     }

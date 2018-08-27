@@ -54,7 +54,6 @@
 <script>
 
 import ProgressBar from './ProgressBar.vue'
-const url = "http://localhost:8000";
 
 export default {
   name: 'SignUp',
@@ -79,9 +78,9 @@ export default {
       this.$router.push('/')
     },
     signUp () {
-      //spinner on before fetch
+      // spinner on before fetch
       this.loading = true
-      this.axios.post(`${url}/register`, this.user).then((response) => {
+      this.$axios.post('/register', this.user).then((response) => {
         this.loading = false
         this.$router.push('/login')
       }).catch(() => {

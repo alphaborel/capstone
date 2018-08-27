@@ -38,7 +38,6 @@
 <script>
 
 import ProgressBar from './ProgressBar.vue'
-const url = "http://localhost:8000";
 
 export default {
   name: 'login',
@@ -60,11 +59,11 @@ export default {
       this.$router.push('/')
     },
     login () {
-      //spinner on before fetch
+      // spinner on before fetch
       this.loading = true
-      this.axios.post(`${url}/login`, this.user).then((response) => {
+      this.$axios.post('/login', this.user).then((response) => {
         this.loading = false
-        localStorage.setItem("userToken", response.data.token)
+        localStorage.setItem('userToken', response.data.token)
         this.$router.push('/dashboard')
       }).catch(() => {
         this.loading = false

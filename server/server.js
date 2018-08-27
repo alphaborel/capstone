@@ -8,6 +8,7 @@ const knex = require('./db/knex');
 
 //routes
 const index = require('./routes/indexRoutes');
+const loanRoutes = require('./routes/loanRoutes');
 
 //authentication
 const jwt = require("jsonwebtoken");
@@ -28,7 +29,7 @@ app.use('/', index);
 
 // paths put after this line will run authentication check
 app.use(jwtUserAuth);
-//app.use('/somepath', someroutefile);
+app.use('/loans', loanRoutes);
 
 app.listen(port, function() {
   console.log("listening on port: ", port);
@@ -36,8 +37,7 @@ app.listen(port, function() {
 
 function jwtUserAuth(req, res, next){
    //send as a query parameter
-   let token = req.body.token || req.query.token || req.headers['x-access-token']|| req.params.token;
-   console.log("token is " + token);
+   let token = req.body.token || req.query.token || req.headers['access-token']|| req.params.token;
    // decode token
    if (token) {
        // verifies secret and checks exp

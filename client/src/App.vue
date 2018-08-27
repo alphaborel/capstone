@@ -34,7 +34,6 @@ export default {
   name: 'App',
   mounted () {
     const token = localStorage.getItem('userToken') || ''
-    console.log('mounted method', token)
     if (token !== '') {
       this.user = true
     }
