@@ -5,9 +5,14 @@ import { Pie } from 'vue-chartjs'
 
 export default {
   extends: Pie,
-  props: {
-    loanInfo: Array
-  },
+  props: ['allLoans'],
+  data () {
+      return {
+        datacollection: {
+          //labels: this.allLoans.totalAmount,
+        }
+      }
+    },
   mounted () {
     // Overwriting base render method with actual data.
     this.renderChart({
@@ -18,7 +23,13 @@ export default {
           backgroundColor: 'green',
           data: [40, 20]
         }
-      ]
+      ],
+      options: {
+        title: {
+          display: true,
+          text: 'Predicted world population (millions) in 2050'
+        }
+      }
     })
   }
 }

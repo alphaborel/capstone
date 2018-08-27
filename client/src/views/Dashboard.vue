@@ -2,23 +2,34 @@
 
   <div class="wrapper">
     <div class="loanColumn">
+
       <div class="columnTitle">
         <h3>Outstanding Loans</h3>
-          <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
+        <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
       </div>
-    </div>
+
+      <div class="loadingBar">
+        <ProgressBar v-if="loading" />
+      </div>
+        <loans :loanInfo="outstandingLoans"/>
+
+    </div> <!-- end loanColumn -->
 
     <div class="loanColumn">
       <div class="columnTitle">
         <h3>Originated Loans</h3>
-          <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
+        <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
       </div>
-      <ProgressBar v-if="loading" />
-      <Loans :loanInfo="loans"/>
-    </div>
+
+      <div>
+        <ProgressBar v-if="loading" />
+      </div>
+      <Loans :loanInfo="originatedLoans"/>
+
+    </div> <!-- end loanColumn -->
 
     <div v-if="showChart" class="chartDiv">
-      <Chart />
+      <Chart :chartInfo="allLoans"/>
     </div>
 
     <div v-if="loanForm" class="chartDiv">
@@ -38,22 +49,30 @@ import ProgressBar from '../components/ProgressBar.vue'
 export default {
   name: 'dashboard',
   mounted () {
-    this.$axios.get('/loans').then((response) => {
+    this.$axios.get(`/loans/${localStorage.getItem('userId')}`).then((response) => {
       this.loading = false
-      this.loans = response.data
-      console.log('server response', response.data);
+      console.log(response.data)
+      this.allLoans = response.data
+      // filtering out for two different types of loans from the server
+      this.outstandingLoans = response.data.filter(item => {
+        return item.isUserLoan })
+      this.originatedLoans = response.data.filter(item => {
+        return item.isUserLoan === false })
+
     }).catch((e) => {
-      console.log('something went wrong!', e);
+      console.log('something went wrong!', e)
     })
   },
   data: () => ({
     valid: false,
     showChart: true,
     loanForm: false,
-    loading: false,
-    loans: [],
+    loading: true,
+    allLoans: [],
+    outstandingLoans: [],
+    originatedLoans: [],
     nameRules: [
-      v => !!v || 'Name is required'
+      v => !!v || 'This Field is required'
     ]
   }),
   components: {
@@ -74,6 +93,7 @@ export default {
   }
 }
 </script>
+
 <style>
   .wrapper {
     width: 100vw;
@@ -107,10 +127,9 @@ export default {
   .chartDiv {
     margin-left: 1em;
     margin-top: 1em;
-    height: 425px;
+    height: 500px;
     padding: 1em;
     text-align: center;
     background-color: #f5f4f5;
   }
-
 </style>

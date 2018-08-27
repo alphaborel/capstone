@@ -4,14 +4,15 @@ const knex = require('../db/knex');
 
 router.get('/', function(req, res, next) {
   knex('loans')
-    .select()
+    .select('*')
+    .where('userId', req.params.id)
     .then(results => res.json(results))
 });
 
 router.get('/:id', function(req, res) {
   knex('loans')
     .select()
-    .where('id', req.params.id)
+    .where('userId', req.params.id)
     .then(results => res.json(results))
 });
 
