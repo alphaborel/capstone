@@ -32,6 +32,15 @@ exports.seed = function(knex, Promise) {
           isUserLoan: true,
           userId: 1
         },
+        { lenderName: 'Money Shark Co',
+          recipientsName: null,
+          loanNumber: 'A333B',
+          totalAmount: 5000,
+          startDate: '8/12/2017',
+          payoffDate: '8/31/2019',
+          isUserLoan: false,
+          userId: 2
+        },
       ]);
     });
 };

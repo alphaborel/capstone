@@ -10,6 +10,12 @@ exports.seed = function(knex, Promise) {
           password: '1234',
           businessName: 'TopShelf Co',
           email: 't@aol.com'
+        },
+        {
+          username: 'tester',
+          password: '1234',
+          businessName: 'Target',
+          email: 't@aol.com'
         }
       ]);
     });

@@ -43,6 +43,7 @@ function jwtUserAuth(req, res, next){
        // verifies secret and checks exp
        jwt.verify(token, jwtSecret, function(err, decoded) {
            if (err) {
+               console.log('token',token)
                return res.json({ success: false, message: 'Failed to authenticate token.' });
            } else {
                // if everything is good, save to request for use in other routes

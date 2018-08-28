@@ -15,7 +15,7 @@ const axiosConfig = {
 Vue.prototype.$axios = axios.create(axiosConfig)
 // Default vars set up from localStorage (ie, user has come back)
 Vue.prototype.$axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('userToken')}`
-Vue.prototype.$axios.defaults.headers.common['Access-Token'] = localStorage.getItem('userToken')
+Vue.prototype.$axios.defaults.headers.common['access-token'] = localStorage.getItem('userToken')
 
 Vue.config.productionTip = false
 

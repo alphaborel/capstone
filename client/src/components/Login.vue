@@ -62,10 +62,11 @@ export default {
       // spinner on before fetch
       this.loading = true
       this.$axios.post('/login', this.user).then((response) => {
-        console.log(response.data);
         this.loading = false
         localStorage.setItem('userToken', response.data.token)
         localStorage.setItem('userId', response.data.user.id)
+        this.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
+        this.$axios.defaults.headers.common['access-token'] = response.data.token
         this.$router.push('/dashboard')
       }).catch(() => {
         this.loading = false

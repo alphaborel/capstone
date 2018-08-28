@@ -2,14 +2,22 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../db/knex');
 
-router.get('/', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
+  console.log('first route');
   knex('loans')
     .select('*')
     .where('userId', req.params.id)
-    .then(results => res.json(results))
+    .then(results => {
+      console.log('LOAN_RESULTS',results)
+      res.json(results)
+    })
+    .catch((e) => {
+      console.error('get route', e)
+    });
 });
 
-router.get('/:id', function(req, res) {
+router.get('/loan/:id', function(req, res) {
+  console.log('second route');
   knex('loans')
     .select()
     .where('userId', req.params.id)

@@ -4,44 +4,55 @@
       <v-flex>
         <v-form ref="form" v-model="valid" @submit.prevent="createLoan">
           <h3 class="formTitle">Add a New Loan</h3>
-         <v-text-field
+          <v-checkbox
+            light
+            :label="`Are you the Lender?`"
+            v-model="formInfo.isUserLoan"
+          ></v-checkbox>
+          <v-text-field v-if="formInfo.isUserLoan"
+            light
+            v-model="formInfo.recipientsName"
+            :rules="nameRules"
+            label="Recipients Name*"
+            required
+          ></v-text-field>
+         <v-text-field v-if="!formInfo.isUserLoan"
            light
            v-model="formInfo.lenderName"
            :rules="nameRules"
-           label="Lender Name"
+           label="Lender Name*"
            required
          ></v-text-field>
          <v-text-field
            light
            v-model="formInfo.loanNumber"
            :rules="nameRules"
-           label="Loan Number"
+           label="Loan Number*"
            required
          ></v-text-field>
          <v-text-field
            light
            v-model="formInfo.totalAmount"
            :rules="nameRules"
-           label="Total Amount"
+           label="Total Amount*"
            required
          ></v-text-field>
          <v-text-field
            light
            v-model="formInfo.startDate"
            :rules="nameRules"
-           label="Start Date"
+           label="Start Date*"
            placeholder="Day/Month/Year"
            required
          ></v-text-field>
          <v-text-field
            light
            v-model="formInfo.payoffDate"
-           :rules="nameRules"
            label="Expected Payoff Date"
            placeholder="Day/Month/Year"
          ></v-text-field>
 
-         <v-btn type="submit">submit</v-btn>
+         <v-btn light type="submit" :disabled='!valid'>submit</v-btn>
          <v-btn @click="cancelEntry">Cancel</v-btn>
 
        </v-form>
@@ -51,6 +62,7 @@
 </template>
 
 <script>
+const theUser = localStorage.getItem('userId')
 
 export default {
   name: 'loan',
@@ -58,11 +70,13 @@ export default {
     valid: false,
     formInfo: {
       lenderName: '',
+      recipientsName: '',
       loanNumber: '',
       totalAmount: '',
       startDate: '',
       payoffDate: '',
-      userId: ''
+      isUserLoan: true,
+      userId: theUser
     },
     nameRules: [
       v => !!v || 'This Field is required'
@@ -75,7 +89,9 @@ export default {
     createLoan () {
       this.$axios.post('/loans', this.formInfo)
       .then((response) => {
-        console.log(response)
+              console.log('form info',this.formInfo);
+        this.$emit('closeForm')
+        this.$emit('refreshLoanList')
       }).catch((e) => {
         console.log('something went wrong!', e)
       })
@@ -84,8 +100,7 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
   .formBox {
     width: 400px;
   }

@@ -5,10 +5,11 @@ exports.up = function(knex, Promise) {
     t.string('lenderName');
     t.string('recipientsName');
     t.string('loanNumber');
-    t.integer('totalAmount');
+    t.string('totalAmount');
     t.string('startDate');
     t.string('payoffDate');
     t.boolean('isUserLoan');
+    t.text('notes');
     t.integer('userId')
       .unsigned()
       .references('id')

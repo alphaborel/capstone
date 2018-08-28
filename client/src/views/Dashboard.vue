@@ -33,7 +33,10 @@
     </div>
 
     <div v-if="loanForm" class="chartDiv">
-      <Loan v-on:closeForm="closeLoanForm"/>
+      <Loan
+      v-on:refreshLoanList="fetchAllLoans"
+      v-on:closeForm="closeLoanForm"
+      />
     </div>
 
   </div> <!-- end wrapper div -->
@@ -45,23 +48,12 @@ import Chart from '../components/Chart.vue'
 import Loans from '../components/Loans.vue'
 import Loan from '../components/Loan.vue'
 import ProgressBar from '../components/ProgressBar.vue'
+import NavLinks from '../components/NavLinks.vue'
 
 export default {
   name: 'dashboard',
   mounted () {
-    this.$axios.get(`/loans/${localStorage.getItem('userId')}`).then((response) => {
-      this.loading = false
-      console.log(response.data)
-      this.allLoans = response.data
-      // filtering out for two different types of loans from the server
-      this.outstandingLoans = response.data.filter(item => {
-        return item.isUserLoan })
-      this.originatedLoans = response.data.filter(item => {
-        return item.isUserLoan === false })
-
-    }).catch((e) => {
-      console.log('something went wrong!', e)
-    })
+    this.fetchAllLoans()
   },
   data: () => ({
     valid: false,
@@ -89,6 +81,24 @@ export default {
     closeLoanForm: function () {
       this.showChart = true
       this.loanForm = false
+    },
+    fetchAllLoans () {
+      this.$axios.get(`/loans/${localStorage.getItem('userId')}`)
+      .then((response) => {
+        // hide loading animation
+        this.loading = false
+        // store unfiltered data
+        this.allLoans = response.data
+        console.log('data from server', response.data);
+        // filtering out for two different types of loans from the server
+        this.originatedLoans = response.data.filter(item => {
+          return item.isUserLoan })
+        this.outstandingLoans = response.data.filter(item => {
+          return item.isUserLoan === false })
+
+      }).catch((e) => {
+        console.log('something went wrong!', e)
+      })
     }
   }
 }
@@ -107,6 +117,7 @@ export default {
     width: 400px;
     min-width: 300px;
     height: 98vh;
+    overflow: hidden;
     background-color: #484e57;
   }
   .columnTitle {
@@ -127,7 +138,7 @@ export default {
   .chartDiv {
     margin-left: 1em;
     margin-top: 1em;
-    height: 500px;
+    height: 600px;
     padding: 1em;
     text-align: center;
     background-color: #f5f4f5;
