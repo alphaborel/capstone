@@ -16,8 +16,9 @@
 <script>
 export default {
   computed: {
-    userLoggedIn() {
+    userLoggedIn () {
       const token = localStorage.getItem('userToken')
+      console.log(token);
     }
   },
   methods: {

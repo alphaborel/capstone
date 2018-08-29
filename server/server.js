@@ -29,7 +29,9 @@ app.use('/', index);
 
 // paths put after this line will run authentication check
 app.use(jwtUserAuth);
+app.use('/loan', loanRoutes);
 app.use('/loans', loanRoutes);
+
 
 app.listen(port, function() {
   console.log("listening on port: ", port);

@@ -5,8 +5,8 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import SignUp from './components/SignUp.vue'
 import Login from './components/Login.vue'
-import Loan from './components/Loan.vue'
 import Dashboard from './views/Dashboard.vue'
+import LoanView from './views/LoanView.vue'
 
 Vue.use(Router)
 
@@ -47,8 +47,8 @@ export default new Router({
     },
     {
       path: '/loan/:id',
-      name: 'loan',
-      component: Loan,
+      name: 'loanview',
+      component: LoanView,
       beforeEnter: isLoggedIn
     }
   ]

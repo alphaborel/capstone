@@ -89,7 +89,6 @@ export default {
         this.loading = false
         // store unfiltered data
         this.allLoans = response.data
-        console.log('data from server', response.data);
         // filtering out for two different types of loans from the server
         this.originatedLoans = response.data.filter(item => {
           return item.isUserLoan })
@@ -138,7 +137,7 @@ export default {
   .chartDiv {
     margin-left: 1em;
     margin-top: 1em;
-    height: 600px;
+    height: 700px;
     padding: 1em;
     text-align: center;
     background-color: #f5f4f5;

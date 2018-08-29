@@ -8,7 +8,6 @@ router.get('/:id', function(req, res, next) {
     .select('*')
     .where('userId', req.params.id)
     .then(results => {
-      console.log('LOAN_RESULTS',results)
       res.json(results)
     })
     .catch((e) => {
@@ -17,10 +16,10 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.get('/loan/:id', function(req, res) {
-  console.log('second route');
+  console.log('second route', req.params.id);
   knex('loans')
     .select()
-    .where('userId', req.params.id)
+    .where('id', req.params.id)
     .then(results => res.json(results))
 });
 

@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     loadIndividualLoan (e) {
-      this.$router.push({name: 'loan', params: { id: e.id }})
+      this.$router.push({name: 'loanview', params: { id: e.id }})
     }
   }
 }
