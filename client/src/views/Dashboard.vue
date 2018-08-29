@@ -11,7 +11,8 @@
       <div class="loadingBar">
         <ProgressBar v-if="loading" />
       </div>
-        <loans :loanInfo="outstandingLoans"/>
+        <loans :loanInfo="outstandingLoans"
+                v-on:refreshAfterDelete="fetchAllLoans" />
 
     </div> <!-- end loanColumn -->
 
@@ -24,7 +25,8 @@
       <div>
         <ProgressBar v-if="loading" />
       </div>
-      <Loans :loanInfo="originatedLoans"/>
+      <Loans :loanInfo="originatedLoans"
+              v-on:refreshAfterDelete="fetchAllLoans" />
 
     </div> <!-- end loanColumn -->
 
@@ -84,20 +86,21 @@ export default {
     },
     fetchAllLoans () {
       this.$axios.get(`/loans/${localStorage.getItem('userId')}`)
-      .then((response) => {
+        .then((response) => {
         // hide loading animation
-        this.loading = false
-        // store unfiltered data
-        this.allLoans = response.data
-        // filtering out for two different types of loans from the server
-        this.originatedLoans = response.data.filter(item => {
-          return item.isUserLoan })
-        this.outstandingLoans = response.data.filter(item => {
-          return item.isUserLoan === false })
-
-      }).catch((e) => {
-        console.log('something went wrong!', e)
-      })
+          this.loading = false
+          // store unfiltered data
+          this.allLoans = response.data
+          // filtering out for two different types of loans from the server
+          this.originatedLoans = response.data.filter(item => {
+            return item.isUserLoan
+          })
+          this.outstandingLoans = response.data.filter(item => {
+            return item.isUserLoan === false
+          })
+        }).catch((e) => {
+          console.log('something went wrong!', e)
+        })
     }
   }
 }

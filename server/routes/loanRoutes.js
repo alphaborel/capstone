@@ -24,6 +24,7 @@ router.get('/loan/:id', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+  console.log('post route');
   knex('loans')
     .insert(req.body, '*')
     .then(newLoan => res.json(newLoan))
@@ -38,10 +39,11 @@ router.patch('/:id', function(req, res) {
 });
 
 router.delete('/:id', function(req, res) {
+  console.log('delete route', req.params.id);
   knex('loans')
     .del()
     .where('id', req.params.id)
-    .then(removedLoan => removedLoan)
+    .then(removedLoan => res.json(removedLoan))
 });
 
 module.exports = router;

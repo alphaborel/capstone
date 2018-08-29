@@ -5,23 +5,26 @@ import { Pie } from 'vue-chartjs'
 
 export default {
   extends: Pie,
-  props: ['allLoans'],
+  props: ['chartInfo'],
+  // watch: {
+  //     	chartInfo: function(newVal, oldVal) { // watch it
+  //         console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+  //       }},
   data () {
-      return {
-        datacollection: {
-          //labels: this.allLoans.totalAmount,
-        }
-      }
-    },
+    return {
+      chartTitles :[],
+      chartAmounts: []
+    }
+  },
   mounted () {
-    // Overwriting base render method with actual data.
+    this.renderInfo()
     this.renderChart({
-      labels: ['January', 'Febuary'],
+      labels: this.chartTitles,
       datasets: [
         {
-          label: 'GitHub Commits',
+          label: 'Label',
           backgroundColor: 'green',
-          data: [40, 20]
+          data: this.chartAmounts
         }
       ],
       options: {
@@ -31,6 +34,21 @@ export default {
         }
       }
     })
+  },
+  methods: {
+    renderInfo () {
+      console.log('hi');
+      const lenders = this.chartInfo.map((o) => {
+        return o.lenderName
+      })
+      const amounts = this.chartInfo.map((o) => {
+        return o.totalAmount
+      })
+      this.chartTitles = lenders
+      console.log(this.chartTitles);
+      this.chartAmounts = amounts
+
+    }
   }
 }
 </script>

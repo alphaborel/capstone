@@ -96,14 +96,15 @@ export default {
       this.$emit('closeForm')
     },
     createLoan () {
+      console.log(this.formInfo);
       this.$axios.post('/loans', this.formInfo)
-      .then((response) => {
-              console.log('form info',this.formInfo);
-        this.$emit('closeForm')
-        this.$emit('refreshLoanList')
-      }).catch((e) => {
-        console.log('something went wrong!', e)
-      })
+        .then((response) => {
+          console.log('form info', this.formInfo)
+          this.$emit('closeForm')
+          this.$emit('refreshLoanList')
+        }).catch((e) => {
+          console.log('something went wrong!', e)
+        })
     }
   }
 }

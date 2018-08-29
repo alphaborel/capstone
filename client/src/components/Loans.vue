@@ -6,6 +6,7 @@
         <div>
           <h2 class="headline">{{Loan.lenderName || Loan.recipientsName}}</h2>
           <p>${{Loan.totalAmount}}</p>
+          <a @click="deleteLoan(Loan, $event)">Delete</a>
           <v-btn class="infoBtn" small @click="loadIndividualLoan(Loan, $event)">Full Info</v-btn>
         </div>
       </div>
@@ -22,6 +23,16 @@ export default {
   methods: {
     loadIndividualLoan (e) {
       this.$router.push({name: 'loanview', params: { id: e.id }})
+    },
+    deleteLoan (e) {
+      console.log('the event', e.id);
+      this.$axios.delete(`/loans/${e.id}`)
+        .then((response) => {
+          console.log('response is back!', response);
+          this.$emit('refreshAfterDelete')
+        }).catch((e) => {
+          console.log('something went wrong!', e)
+        })
     }
   }
 }

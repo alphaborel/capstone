@@ -79,13 +79,13 @@ const theUser = localStorage.getItem('userId')
 export default {
   name: 'loanview',
   created () {
-      this.$axios.get(`/loan/loan/${this.$route.params.id}`)
+    this.$axios.get(`/loan/loan/${this.$route.params.id}`)
       .then((response) => {
         this.formInfo = response.data[0]
       }).catch((e) => {
         console.log('something went wrong!', e)
       })
-    },
+  },
   data: () => ({
     valid: false,
     success: false,
@@ -110,17 +110,17 @@ export default {
     },
     updateLoan () {
       this.$axios.patch(`/loans/${this.$route.params.id}`, this.formInfo)
-      .then((response) => {
-        this.updateSuccess()
-      }).catch((e) => {
-        console.log('something went wrong!', e)
-      })
+        .then((response) => {
+          this.updateSuccess()
+        }).catch((e) => {
+          console.log('something went wrong!', e)
+        })
     },
     updateSuccess () {
       this.success = true
-      setTimeout(this.successWait, 3000)
+      setTimeout(this.successWait, 2000)
     },
-    successWait (){
+    successWait () {
       this.$router.push('/dashboard')
     }
   }
