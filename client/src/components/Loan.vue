@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import EventBus from '../event-bus';
+import EventBus from '../event-bus'
 
 export default {
   name: 'loans',
-  data() {
-     return {show: false}
+  data () {
+    return {show: false}
   },
   props: {
     Loan: Object

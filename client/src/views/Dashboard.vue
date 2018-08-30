@@ -93,7 +93,7 @@ export default {
           this.loading = false
           // store unfiltered data
           this.allLoans = response.data
-          console.log('info in fetch call', this.allLoans);
+
           // filtering out for two different types of loans from the server
           this.originatedLoans = response.data.filter(item => {
             return item.isUserLoan
@@ -120,7 +120,7 @@ export default {
     margin-left: 1em;
     margin-top: 1em;
     width: 400px;
-    min-width: 300px;
+    min-width: 350px;
     height: 98vh;
     overflow: hidden;
     background-color: #484e57;
