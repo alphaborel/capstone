@@ -1,8 +1,8 @@
 <template>
   <div class="splash">
     <div class="tagDiv">
-      <h3>Grow your small business with:</h3>
-      <h1><em>Loan Tracker</em></h1>
+      <h3>Keep track of your loans and grow your small business with:</h3>
+      <h1><em>Loan-Dash</em></h1>
       <v-btn color="green" large :to="{name: 'signup' }">Get Started</v-btn>
     </div>
   </div>

@@ -1,22 +1,23 @@
+
 <template>
   <div>
-    <div
-    class="loanCardDiv"
-    v-for="Loan in loanInfo" v-bind:key="Loan.Id">
-        <div>
-          <h2 class="headline">{{Loan.lenderName || Loan.recipientsName}}</h2>
-          <p>${{Loan.totalAmount}}</p>
-          <a @click="deleteLoan(Loan, $event)">Delete</a>
-          <v-btn class="infoBtn" small @click="loadIndividualLoan(Loan, $event)">Full Info</v-btn>
-        </div>
-      </div>
+    <Loan v-for="(Loan, index) in loanInfo" v-bind:key="Loan.Id" :Loan="Loan"/>
   </div>
 </template>
 
 <script>
+import Loan from './Loan.vue'
 
 export default {
+  components: {
+    Loan
+  },
   name: 'loans',
+  data () {
+  return {
+     loan:[{ show:false}, { show:false}, { show:false}, { show:false}]
+    }
+  },
   props: {
     loanInfo: Array
   },
@@ -25,10 +26,8 @@ export default {
       this.$router.push({name: 'loanview', params: { id: e.id }})
     },
     deleteLoan (e) {
-      console.log('the event', e.id);
       this.$axios.delete(`/loans/${e.id}`)
         .then((response) => {
-          console.log('response is back!', response);
           this.$emit('refreshAfterDelete')
         }).catch((e) => {
           console.log('something went wrong!', e)
@@ -38,7 +37,6 @@ export default {
 }
 
 </script>
-
 <style scoped>
   .loanCardDiv {
     height: 100px;
@@ -49,9 +47,12 @@ export default {
     position: relative;
   }
   p {
-    font-size: 1.5em;
-    width: 100px;
+    font-size: 1em;
     float: left;
+    margin-bottom: 0;
+  }
+  .dateTag {
+    margin-left: 15px;
   }
   .infoBtn {
     float: right;

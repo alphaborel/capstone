@@ -3,32 +3,31 @@
     <v-slide-y-transition mode="out-in">
       <v-layout column align-center>
         <h1>User Login</h1>
-        <v-form
-          light
-          v-if="!loading"
-          v-model="valid"
-          @submit.prevent="login"
-          @keydown.prevent.enter
-          >
-            <v-text-field
-              v-model="user.username"
-              :rules="notEmptyRules"
-              label="Username"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="user.password"
-              :rules="notEmptyRules"
-              label="Password"
-              type="password"
-              required
-            ></v-text-field>
-          <v-btn type="submit" :disabled='!valid'>Login</v-btn>
-          <v-btn @click="cancelLogin">Cancel</v-btn>
-        </v-form>
+          <v-form
+            light
+            v-if="!loading"
+            v-model="valid"
+            @submit.prevent="login"
+            @keydown.prevent.enter>
+          <v-text-field
+            v-model="user.username"
+            :rules="notEmptyRules"
+            label="Username"
+            required
+          ></v-text-field>
+          <v-text-field
+            v-model="user.password"
+            :rules="notEmptyRules"
+            label="Password"
+            type="password"
+            required
+          ></v-text-field>
+            <v-btn type="submit" :disabled='!valid'>Login</v-btn>
+            <v-btn @click="cancelLogin">Cancel</v-btn>
+          </v-form>
           <!-- progress and error elements -->
           <ProgressBar v-if="loading" />
-          <h1 v-if="fetchError">Oh no! The server is unavailable for some reason.</h1>
+          <h1 v-if="fetchError">Wrong username or password.</h1>
       </v-layout>
     </v-slide-y-transition>
   </v-container>
@@ -62,11 +61,15 @@ export default {
       // spinner on before fetch
       this.loading = true
       this.$axios.post('/login', this.user).then((response) => {
+        // turn off progress bar/spinner
         this.loading = false
+
         localStorage.setItem('userToken', response.data.token)
         localStorage.setItem('userId', response.data.user.id)
+
         this.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`
         this.$axios.defaults.headers.common['access-token'] = response.data.token
+
         this.$router.push('/dashboard')
       }).catch(() => {
         this.loading = false

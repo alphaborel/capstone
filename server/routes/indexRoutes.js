@@ -22,6 +22,8 @@ router.post("/login", function(req, res) {
     } else {
       res.sendStatus(400);
     }
+  }).catch((e) => {
+    console.error('Login Failure', e)
   })
 })
 

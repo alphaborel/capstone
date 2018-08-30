@@ -5,7 +5,7 @@
 
       <div class="columnTitle">
         <h3>Outstanding Loans</h3>
-        <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
+        <v-btn @click="showLoanForm(false)" class="addBtn">ADD NEW</v-btn>
       </div>
 
       <div class="loadingBar">
@@ -19,26 +19,26 @@
     <div class="loanColumn">
       <div class="columnTitle">
         <h3>Originated Loans</h3>
-        <v-btn @click="showLoanForm" class="addBtn">ADD NEW</v-btn>
+        <v-btn @click="showLoanForm(true)" class="addBtn">ADD NEW</v-btn>
       </div>
 
       <div>
         <ProgressBar v-if="loading" />
       </div>
-      <Loans :loanInfo="originatedLoans"
-              v-on:refreshAfterDelete="fetchAllLoans" />
+      <Loans :loanInfo="originatedLoans"/>
 
     </div> <!-- end loanColumn -->
 
-    <div v-if="showChart" class="chartDiv">
-      <Chart :chartInfo="allLoans"/>
-    </div>
-
-    <div v-if="loanForm" class="chartDiv">
+    <div class="loanformDiv" v-if="toggleLoanForm">
       <Loan
+      :loanType="loanFormType"
       v-on:refreshLoanList="fetchAllLoans"
       v-on:closeForm="closeLoanForm"
       />
+    </div>
+
+    <div class="chartDiv">
+      <Chart :chartInfo="allLoans" />
     </div>
 
   </div> <!-- end wrapper div -->
@@ -48,19 +48,22 @@
 
 import Chart from '../components/Chart.vue'
 import Loans from '../components/Loans.vue'
-import Loan from '../components/Loan.vue'
+import Loan from '../components/LoanForm.vue'
 import ProgressBar from '../components/ProgressBar.vue'
 import NavLinks from '../components/NavLinks.vue'
+import EventBus from '../event-bus';
 
 export default {
   name: 'dashboard',
   mounted () {
     this.fetchAllLoans()
+    EventBus.$on('refreshAfterDelete', this.fetchAllLoans)
   },
   data: () => ({
     valid: false,
-    showChart: true,
+    toggleLoanForm: false,
     loanForm: false,
+    loanFormType: false,
     loading: true,
     allLoans: [],
     outstandingLoans: [],
@@ -76,13 +79,12 @@ export default {
     ProgressBar
   },
   methods: {
-    showLoanForm () {
-      this.showChart = false
-      this.loanForm = true
+    showLoanForm (boolean) {
+      this.toggleLoanForm = true
+      this.loanFormType = boolean
     },
     closeLoanForm: function () {
-      this.showChart = true
-      this.loanForm = false
+      this.toggleLoanForm = false
     },
     fetchAllLoans () {
       this.$axios.get(`/loans/${localStorage.getItem('userId')}`)
@@ -91,6 +93,7 @@ export default {
           this.loading = false
           // store unfiltered data
           this.allLoans = response.data
+          console.log('info in fetch call', this.allLoans);
           // filtering out for two different types of loans from the server
           this.originatedLoans = response.data.filter(item => {
             return item.isUserLoan
@@ -137,10 +140,14 @@ export default {
   .addBtn {
     margin-right: 1em;
   }
+  .loanformDiv {
+    background-color: #f5f4f5;
+    margin-left: 1em;
+  }
   .chartDiv {
     margin-left: 1em;
     margin-top: 1em;
-    height: 700px;
+    height: 450px;
     padding: 1em;
     text-align: center;
     background-color: #f5f4f5;

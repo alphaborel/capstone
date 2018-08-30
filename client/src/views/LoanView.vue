@@ -12,65 +12,64 @@
             label="Recipients Name*"
             required
           ></v-text-field>
-         <v-text-field v-if="!formInfo.isUserLoan"
-           light
-           v-model="formInfo.lenderName"
-           :rules="nameRules"
-           label="Lender Name*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.loanNumber"
-           :rules="nameRules"
-           label="Loan Number*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.totalAmount"
-           :rules="nameRules"
-           label="Total Amount*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.startDate"
-           :rules="nameRules"
-           label="Start Date*"
-           placeholder="Day/Month/Year"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.payoffDate"
-           label="Expected Payoff Date"
-           placeholder="Day/Month/Year"
-         ></v-text-field>
-         <v-textarea
-          light
-          box
-          name="Notes"
-          label="Notes"
-          value=""
-          v-model="formInfo.notes"
-        ></v-textarea>
+          <v-text-field v-if="!formInfo.isUserLoan"
+             light
+             v-model="formInfo.lenderName"
+             :rules="nameRules"
+             label="Lender Name*"
+             required
+          ></v-text-field>
+          <v-text-field
+             light
+             v-model="formInfo.loanNumber"
+             :rules="nameRules"
+             label="Loan Number*"
+             required
+          ></v-text-field>
+          <v-text-field
+             light
+             v-model="formInfo.totalAmount"
+             :rules="nameRules"
+             label="Total Amount*"
+             required
+          ></v-text-field>
+          <v-text-field
+             light
+             v-model="formInfo.startDate"
+             :rules="nameRules"
+             label="Start Date*"
+             placeholder="Day/Month/Year"
+             required
+          ></v-text-field>
+          <v-text-field
+             light
+             v-model="formInfo.payoffDate"
+             label="Expected Payoff Date"
+             placeholder="Day/Month/Year"
+          ></v-text-field>
+          <v-textarea
+            light
+            box
+            name="Notes"
+            label="Notes"
+            value=""
+            v-model="formInfo.notes"
+          ></v-textarea>
 
         <v-alert
           v-model="success"
-          type="success"
-          >
+          type="success">
             Update Successful!
         </v-alert>
 
          <v-btn light type="submit" :disabled='!valid'>Update</v-btn>
          <v-btn @click="cancelEntry">Cancel</v-btn>
 
-       </v-form>
-     </v-flex>
-    </v-layout>
-  </v-container>
-</div>
+         </v-form>
+       </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -118,7 +117,7 @@ export default {
     },
     updateSuccess () {
       this.success = true
-      setTimeout(this.successWait, 2000)
+      setTimeout(this.successWait, 1200)
     },
     successWait () {
       this.$router.push('/dashboard')

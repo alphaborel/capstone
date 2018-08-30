@@ -1,120 +1,72 @@
 <template>
-  <v-container align-center class="formBox">
-    <v-layout>
-      <v-flex>
-        <v-form ref="form" v-model="valid" @submit.prevent="createLoan">
-          <h3 class="formTitle">Add a New Loan</h3>
-          <v-checkbox
-            light
-            :label="`Are you the Lender?`"
-            v-model="formInfo.isUserLoan"
-          ></v-checkbox>
-          <v-text-field v-if="formInfo.isUserLoan"
-            light
-            v-model="formInfo.recipientsName"
-            :rules="nameRules"
-            label="Recipients Name*"
-            required
-          ></v-text-field>
-         <v-text-field v-if="!formInfo.isUserLoan"
-           light
-           v-model="formInfo.lenderName"
-           :rules="nameRules"
-           label="Lender Name*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.loanNumber"
-           :rules="nameRules"
-           label="Loan Number*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.totalAmount"
-           :rules="nameRules"
-           label="Total Amount*"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.startDate"
-           :rules="nameRules"
-           label="Start Date*"
-           placeholder="Day/Month/Year"
-           required
-         ></v-text-field>
-         <v-text-field
-           light
-           v-model="formInfo.payoffDate"
-           label="Expected Payoff Date"
-           placeholder="Day/Month/Year"
-         ></v-text-field>
-         <v-textarea
-          light
-          box
-          name="Notes"
-          label="Notes"
-          value=""
-          v-model="formInfo.notes"
-        ></v-textarea>
+  <div>
+    <div class="loanCardDiv">
+      <div>
+        <h2 class="headline">{{Loan.lenderName || Loan.recipientsName}}</h2>
+        <p>Total Amount: <b>${{Loan.totalAmount}}</b></p>
+        <p class="dateTag">Start Date: <b>{{Loan.startDate}}</b></p></br>
 
-         <v-btn light type="submit" :disabled='!valid'>submit</v-btn>
-         <v-btn @click="cancelEntry">Cancel</v-btn>
+        <v-btn class="infoBtn" small @click="loadIndividualLoan(Loan, $event)">Full Info</v-btn>
+      </div>
 
-       </v-form>
-     </v-flex>
-    </v-layout>
-  </v-container>
+      <a class="deleteLink" @click="show = !show">
+        <i class="material-icons">delete_forever</i>
+      </a>
+      <span v-show="show">
+        <a @click="deleteLoan(Loan, $event)">Really Delete?</a>
+      </span>
+
+    </div>
+  </div>
 </template>
 
 <script>
-const theUser = localStorage.getItem('userId')
+import EventBus from '../event-bus';
 
 export default {
-  name: 'loan',
-  data: () => ({
-    valid: false,
-    formInfo: {
-      lenderName: '',
-      recipientsName: '',
-      loanNumber: '',
-      totalAmount: '',
-      startDate: '',
-      payoffDate: '',
-      isUserLoan: true,
-      userId: theUser,
-      notes: ''
-    },
-    nameRules: [
-      v => !!v || 'This Field is required'
-    ]
-  }),
+  name: 'loans',
+  data() {
+     return {show: false}
+  },
+  props: {
+    Loan: Object
+  },
   methods: {
-    cancelEntry () {
-      this.$emit('closeForm')
+    loadIndividualLoan (e) {
+      this.$router.push({name: 'loanview', params: { id: e.id }})
     },
-    createLoan () {
-      console.log(this.formInfo);
-      this.$axios.post('/loans', this.formInfo)
+    deleteLoan (e) {
+      this.$axios.delete(`/loans/${e.id}`)
         .then((response) => {
-          console.log('form info', this.formInfo)
-          this.$emit('closeForm')
-          this.$emit('refreshLoanList')
+          EventBus.$emit('refreshAfterDelete')
         }).catch((e) => {
           console.log('something went wrong!', e)
         })
     }
   }
 }
+
 </script>
 
 <style scoped>
-  .formBox {
-    width: 400px;
-  }
-  .formTitle {
+  .loanCardDiv {
+    height: 100px;
+    margin: 10px;
+    padding: 5px;
     color: black;
+    background-color: #f5f4f5;
+    position: relative;
   }
+  p {
+    font-size: 1em;
+    float: left;
+    margin-bottom: 0;
+  }
+  .dateTag {
+    margin-left: 15px;
+  }
+  .infoBtn {
+    float: right;
+  }
+
 </style>
