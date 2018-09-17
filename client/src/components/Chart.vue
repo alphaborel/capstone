@@ -15,7 +15,7 @@ export default {
       // since lender or recipient can be null, filter them:
       const lenders = this.chartInfo.map((o) => {
         return (
-          o.lenderName === '' || null ? o.recipientsName : o.lenderName
+          o.lenderName === null ? o.recipientsName : o.lenderName
         )
       })
       const amounts = this.chartInfo.map((o) => {

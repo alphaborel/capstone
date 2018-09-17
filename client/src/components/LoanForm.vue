@@ -71,6 +71,7 @@
 
 <script>
 const theUser = localStorage.getItem('userId')
+console.log('userId', theUser)
 
 export default {
   name: 'loanform',
